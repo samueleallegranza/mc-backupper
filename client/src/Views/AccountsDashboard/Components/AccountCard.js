@@ -42,14 +42,11 @@ export default function AccountCard() {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <Grid container>
+                <Grid container >
                     <Grid xs={3} className={classes.iconContainer}>
-                        <img src={megaIcon} className={classes.icon}></img>
+                        <img src={megaIcon} className={classes.icon} alt='mega-icon'></img>
                     </Grid>
                     <Grid xs>
-                        {/* <Typography className={classes.title} variant="h6" color="textPrimary" gutterBottom>
-                            MEGA Account
-                        </Typography> */}
                         <Typography className={classes.title} variant="subtitle1" color="textSecondary" gutterBottom>
                             samuele.allegranza@gmail.com
                         </Typography>

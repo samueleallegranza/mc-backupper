@@ -88,3 +88,41 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ * Setup credentials from config file provided
+ */
+const fs = require('fs');
+
+const configFileExists = path => {
+  return fs.existsSync(`../${path}`)
+}
+
+const setCredentials = path => {
+  const fullPath = `../${path}`;
+  const content = JSON.parse(fs.readFileSync(fullPath));
+  process.env.MCBACKUPPER_USERNAME = content['authentication']['username'];
+  process.env.MCBACKUPPER_PASSWORD = content['authentication']['password'];
+}
+
+if (process.argv[2]){
+  if (configFileExists(process.argv[2])){
+    // If provided custom config file and exists
+    console.log(`Using custom config file '${process.argv[2]}'`);
+    setCredentials(process.argv[2])
+  } else {
+    // If provided custom config file and NOT exists
+    console.log(`Config file not found!`);
+    process.exit(1);
+  }
+} else {
+  if (configFileExists('config.json')){
+    // If standard config file and exists
+    console.log(`Using standard config file 'config.json'`)
+    setCredentials('config.json');
+  } else {
+    // If config file not found
+    console.log(`Config file not found!`);
+    process.exit(1);
+  }
+}

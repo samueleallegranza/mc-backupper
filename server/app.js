@@ -23,6 +23,12 @@ app.use(cors());
 // Routers
 app.use('/api', apiRouter);
 
+// Database
+const accountsDb = require('./database/accounts');
+const backupsDb = require('./database/backups');
+accountsDb.init();
+backupsDb.init();
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

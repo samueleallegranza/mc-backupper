@@ -6,7 +6,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,14 +30,21 @@ export default function NewAccountForm() {
 
     return (
         <div>
-            <Button
+            <Fab 
+                color="primary" 
+                aria-label="add"
+                className={classes.button}
+                onClick={handleClickOpen} >
+                <AddIcon /> 
+            </Fab>
+            {/* <Button
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                startIcon={<AddCircleIcon />}
+                startIcon={<AddIcon />}
                 onClick={handleClickOpen} > 
                 Add 
-            </Button>
+            </Button> */}
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">New Mega account</DialogTitle>
                 <DialogContent>

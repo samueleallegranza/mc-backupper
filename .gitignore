@@ -1,9 +1,11 @@
-### Express (express-generator)
-/node_modules
+### Config
+local-config.json
 
+### Server (express-generator)
+server/node_modules
+server/database/db.sqlite
 
 ### Client (create-react-app)
-
 # dependencies
 client/node_modules
 client/.pnp
