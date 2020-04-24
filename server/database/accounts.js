@@ -29,28 +29,47 @@ const accountsDb = {
     },
 
     createNewAccount(email, password, callback){
-        const sql = "INSERT INTO accounts (email, password) VALUES (?,?)";
-        const params = [email, password];
-        db.run(sql, params, callback);
+        if(this._validateInput(email, password)){
+            const sql = "INSERT INTO accounts (email, password) VALUES (?,?)";
+            const params = [email, password];
+            db.run(sql, params, callback);
+        } else {
+            callback(err='invalid input');
+        }
     },
 
     editAccount(id, email, password, callback){
-        const sql = `
-            UPDATE accounts SET
-                email = COALESCE(?, email),
-                password = COALESCE(?, password)
-                WHERE id = ?
-        `;
-        const params = [email, password, id];
-        db.run(sql, params, callback);
+        if (this._validateInput(id, email, password)) {
+            const sql = `
+                UPDATE accounts SET
+                    email = COALESCE(?, email),
+                    password = COALESCE(?, password)
+                    WHERE id = ?
+            `;
+            const params = [email, password, id];
+            db.run(sql, params, callback);
+        } else {
+            callback(err='invalid input');
+        }
     },
 
     deleteAccount(id, callback){
-        const sql = 'DELETE FROM accounts WHERE id = ?';
-        const params = [id];
-        db.run(sql, params, callback);
-    }
+        if (this._validateInput(id)){
+            const sql = 'DELETE FROM accounts WHERE id = ?';
+            const params = [id];
+            db.run(sql, params, callback);
+        } else {
+            callback(err = 'invalid input');
+        }
+    },
 
+    _validateInput(...params){
+        let truthy = true;
+        params.forEach(p => {
+            truthy = truthy && p;  
+        });
+        return truthy;
+    }
 }
 
 module.exports = accountsDb;

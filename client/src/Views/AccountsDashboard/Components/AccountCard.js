@@ -1,13 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+
 import Card from '@material-ui/core/Card';
-// import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import megaIcon from './mega-icon.svg';
-import LinearProgress from '@material-ui/core/LinearProgress';
+// import LinearProgress from '@material-ui/core/LinearProgress';
+
+import EditAccountForm from './EditAccountForm';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function AccountCard() {
+export default function AccountCard(props) {
     const classes = useStyles();
 
     return (
@@ -48,14 +49,14 @@ export default function AccountCard() {
                     </Grid>
                     <Grid xs>
                         <Typography className={classes.title} variant="subtitle1" color="textSecondary" gutterBottom>
-                            samuele.allegranza@gmail.com
+                            {props.email}
                         </Typography>
-                        <Typography className={classes.title} variant="subtitle1" color="textSecondary" gutterBottom>
+                        {/* <Typography className={classes.title} variant="subtitle1" color="textSecondary" gutterBottom>
                             Space: 1GB/15GB
                             <LinearProgress />
-                        </Typography>
+                        </Typography> */}
                         <div className={classes.buttonContainer}>
-                            <Button aria-label="edit" size="small" >Edit</Button>
+                            <EditAccountForm id={props.id} onEdit={props.onEdit} onDelete={props.onDelete} />
                         </div>
                     </Grid>
                 </Grid>

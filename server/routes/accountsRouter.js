@@ -5,7 +5,7 @@ const accountsDb = require('../database/accounts');
 
 //Get all accounts from database
 accountsRouter.post('/list', (req, res, next)=> {
-    accountsDb.getAllAccounts((err, rows) => {
+    accountsDb.getAllAccounts(function (err, rows){
         if (err) {
             res.status(400).send();
         } else {
@@ -18,12 +18,13 @@ accountsRouter.post('/list', (req, res, next)=> {
 accountsRouter.post('/new', (req, res, next)=>{
     const email = req.body.email;
     const password = req.body.password;
-    accountsDb.createNewAccount(email, password, (err, result) => {
+    accountsDb.createNewAccount(email, password, function(err, result) {
         if(err){
             res.status(400).send();
         } else {
             res.status(200).json({
-                "message": "success"
+                "message": "success",
+                "id": this.lastID
             });
         }
     });
@@ -34,7 +35,7 @@ accountsRouter.post('/edit', (req, res, next) => {
     const id = req.body.id;
     const email = req.body.email;
     const password = req.body.password;
-    accountsDb.editAccount(id, email, password, (err, result) => {
+    accountsDb.editAccount(id, email, password, function (err, result) {
         if(err){
             res.status(400).send();
         } else {
@@ -48,7 +49,7 @@ accountsRouter.post('/edit', (req, res, next) => {
 //Delete an account from the database
 accountsRouter.post('/delete', (req, res, next) => {
     const id = req.body.id;
-    accountsDb.deleteAccount(id, (err, result) => {
+    accountsDb.deleteAccount(id, function (err, result) {
         if(err){
             res.status(400).send();
         } else {

@@ -1,53 +1,79 @@
-import React from 'react';
-
-// import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import React, { useEffect, useState } from 'react';
 
 import AccountCard from './Components/AccountCard';
 import NewAccountForm from './Components/NewAccountForm';
+import Message from '../../Components/Message/Message';
+
+import { getAllAccounts, createNewAccount, editAccount, deleteAccount } from '../../Api/Accounts';
 
 
 const AccountsDashboard = () => {
-    // React.useEffect(() => {
-    //     console.log('fetching');
-    //     fetch('/users')
-    //         .then(res => res.json())
-    //         .then(users => console.log(users));
-    // });
 
-    // const onClickHandler = async (event) => {
-    //         const settings = {
-    //             method: 'POST',
-    //             headers: {
-    //                 Accept: 'application/json',
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ username: 'admin', password: 'backup!' })
-    //         };
-    //         try {
-    //             const fetchResponse = await fetch(`/api/auth/login`, settings);
-    //             const data = await fetchResponse.json();
-    //             const status = await fetchResponse.status;
-    //             console.log(data);
-    //             console.log(`status: ${status}`);
-    //         } catch (e) {
-    //             return e;
-    //         }
-    // };
+    const [accounts, setAccounts] = useState([]);
+    const [message, setMessage] = useState({ isOpen: false, type: "", text: "" });
+
+    useEffect(() => {
+        refreshAccountsHandler();
+    }, []);
+
+    const refreshAccountsHandler = async () => {
+        const response = await getAllAccounts();
+        if(response){
+            setAccounts(response);
+        } else {
+            setMessage({ isOpen: true, type: "error", text: "Error listing the accounts" });
+        }
+    }
+
+    const addAccountHandler = async (email, password) => {
+        const response = await createNewAccount(email, password);
+        if(response){
+            refreshAccountsHandler();
+        } else {
+            setMessage({ isOpen: true, type: "error", text: "Error adding a new account"});
+        }
+    }
+
+    const editAccountHandler = async (id, newEmail, newPassword) => {
+        const response = await editAccount(id, newEmail, newPassword);
+        if(response){
+            refreshAccountsHandler();
+        } else {
+            setMessage({ isOpen: true, type: "error", text: "Error editing the account" });
+        }
+    }
+
+    const deleteAccountHandler = async (id) => {
+        const response = await deleteAccount(id);
+        if(response){
+            refreshAccountsHandler();
+        } else {
+            setMessage({ isOpen: true, type: "error", text: "Error deleting the account" });
+        }
+    }
 
     return (
         <div>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="subtitle1" color="inherit">
-                        AccountsDashboard
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <AccountCard />
-            <NewAccountForm />
+            {
+                accounts.map(a => {
+                    return (
+                        <AccountCard
+                            email = {a.email}
+                            id = {a.id}
+                            onEdit = {editAccountHandler}
+                            onDelete = {deleteAccountHandler}
+                        />
+                    )
+                })
+            }
+            <NewAccountForm onAdd={addAccountHandler} />
+        
+            <Message
+                isOpen={message.isOpen}
+                type={message.type}
+                text={message.text}
+                onClose={() => setMessage({ isOpen: false, type: "", text: "" })}
+            />
         </div>
     );
 }

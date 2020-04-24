@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,8 +16,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function NewAccountForm() {
-    const [open, setOpen] = React.useState(false);
+export default function NewAccountForm(props) {
+    const [open, setOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const classes = useStyles();
 
     const handleClickOpen = () => {
@@ -37,14 +39,6 @@ export default function NewAccountForm() {
                 onClick={handleClickOpen} >
                 <AddIcon /> 
             </Fab>
-            {/* <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<AddIcon />}
-                onClick={handleClickOpen} > 
-                Add 
-            </Button> */}
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">New Mega account</DialogTitle>
                 <DialogContent>
@@ -58,6 +52,7 @@ export default function NewAccountForm() {
                         label="Email Address"
                         type="email"
                         fullWidth
+                        onChange={e => setEmail(e.target.value)}
                     />
                     <TextField
                         autoFocus
@@ -66,13 +61,19 @@ export default function NewAccountForm() {
                         label="Password"
                         type="password"
                         fullWidth
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button 
+                        onClick={ () => { 
+                                props.onAdd(email, password)    //Add the new account
+                                handleClose()                   //Close the prompt automatically
+                            }} 
+                        color="primary">
                         Add
                     </Button>
                 </DialogActions>

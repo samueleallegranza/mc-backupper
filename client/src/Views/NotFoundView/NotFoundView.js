@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
@@ -57,23 +55,6 @@ const NotFoundView = () => {
             </Grid>  
         </div>
     );
-
-}
-
-class notFoundView extends React.Component {
-    render() {
-        return (
-            <div>
-                <AppBar position="static">
-                    <Toolbar>
-                        <Typography variant="subtitle1" color="inherit">
-                            Not found!
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-            </div>
-        );
-    }
 
 }
 

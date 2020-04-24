@@ -61,7 +61,7 @@ const checkLogin = () => {
 
 // Login check for the first time
 const newLogin = (username, password) => {
-    const status =  fetchLogin(username, password);
+    const status = fetchLogin(username, password);
     return status;
 }
 
